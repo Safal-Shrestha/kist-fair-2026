@@ -9,11 +9,7 @@ class FormLowerHalf extends StatelessWidget {
       child: Column(
         spacing: 10,
         children: [
-          TextButton(
-            onPressed: () {},
-            style: TextButton.styleFrom(splashFactory: NoSplash.splashFactory),
-            child: Text("Forgot MPIN/Password?"),
-          ),
+          TextButton(onPressed: () {}, child: Text("Forgot MPIN/Password?")),
           SizedBox(
             width: MediaQuery.of(context).size.width,
             height: 50,
@@ -28,11 +24,7 @@ class FormLowerHalf extends StatelessWidget {
               child: Text("LOGIN"),
             ),
           ),
-          TextButton(
-            onPressed: () {},
-            style: TextButton.styleFrom(splashFactory: NoSplash.splashFactory),
-            child: Text("SignUp"),
-          ),
+          TextButton(onPressed: () {}, child: Text("SignUp")),
         ],
       ),
     );

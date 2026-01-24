@@ -5,17 +5,9 @@ class UpperPart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // decoration: BoxDecoration(
-      //   border: BoxBorder.all(color: Colors.blue),
-      // ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          IconsContainer(),
-          WelcomeMessage(),
-        ],
-      )
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [IconsContainer(), WelcomeMessage()],
     );
   }
 }
@@ -27,7 +19,7 @@ class IconsContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 50),
+      margin: EdgeInsets.only(top: 60),
       child: Row(
         children: [
           Expanded(
@@ -35,11 +27,12 @@ class IconsContainer extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.only(left: 20),
               child: Text(
-                  "e-Sikka",
-                  style: TextStyle(
-                      fontSize: 38,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.deepPurpleAccent)
+                "e-Sikka",
+                style: TextStyle(
+                  fontSize: 38,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.deepPurpleAccent,
+                ),
               ),
             ),
           ),
@@ -47,17 +40,20 @@ class IconsContainer extends StatelessWidget {
             flex: 1,
             child: Center(
               child: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                ),
+                decoration: BoxDecoration(shape: BoxShape.circle),
                 child: IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    }, 
-                    icon: Icon(Icons.close, color: Colors.deepPurpleAccent, size: 32,)),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(
+                    Icons.close,
+                    color: Colors.deepPurpleAccent,
+                    size: 32,
+                  ),
+                ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -75,18 +71,13 @@ class WelcomeMessage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            child: Text(
-              "Welcome Back!",
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-            ),
+          Text(
+            "Welcome Back!",
+            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
           ),
-          Container(
-            child: Text("Login below",
-            style: TextStyle(fontSize: 16),),
-          )
-        ]
-      )
+          Text("Login below", style: TextStyle(fontSize: 16)),
+        ],
+      ),
     );
   }
 }

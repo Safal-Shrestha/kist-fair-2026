@@ -8,14 +8,7 @@ class LowerPart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        spacing: 10,
-        children: [
-          LoginButton(),
-          SignupOption(),
-        ],
-      ),
-
+      child: Column(spacing: 10, children: [LoginButton(), SignupOption()]),
     );
   }
 }
@@ -37,23 +30,23 @@ class _LoginButtonState extends State<LoginButton> {
         height: 50,
         margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
         child: ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LoginPage()),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepPurpleAccent
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LoginPage()),
+            );
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.deepPurpleAccent,
+          ),
+          child: Text(
+            "Login",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
-            child: Text(
-                "Login",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                )
-            ),
+          ),
         ),
       ),
     );
@@ -84,14 +77,18 @@ class _SignupOptionState extends State<SignupOption> {
             );
           },
           style: OutlinedButton.styleFrom(
-            side: BorderSide(
-              color: Colors.deepPurpleAccent,
-              width: 2,
+            side: BorderSide(color: Colors.deepPurpleAccent, width: 2),
+          ),
+          child: Text(
+            "Signup",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
           ),
-          child: Text("Signup")
         ),
-      )
+      ),
     );
   }
 }

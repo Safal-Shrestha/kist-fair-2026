@@ -1,0 +1,92 @@
+import 'package:flutter/material.dart';
+
+class UpperPart extends StatelessWidget {
+  const UpperPart({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      // decoration: BoxDecoration(
+      //   border: BoxBorder.all(color: Colors.blue),
+      // ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          IconsContainer(),
+          WelcomeMessage(),
+        ],
+      )
+    );
+  }
+}
+
+//icon container
+class IconsContainer extends StatelessWidget {
+  const IconsContainer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: 50),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 5,
+            child: Container(
+              margin: EdgeInsets.only(left: 20),
+              child: Text(
+                  "e-Sikka",
+                  style: TextStyle(
+                      fontSize: 38,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.deepPurpleAccent)
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Center(
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    }, 
+                    icon: Icon(Icons.close, color: Colors.deepPurpleAccent, size: 32,)),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class WelcomeMessage extends StatelessWidget {
+  const WelcomeMessage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 80,
+      margin: const EdgeInsets.only(left: 20, top: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            child: Text(
+              "Welcome Back!",
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Container(
+            child: Text("Login below",
+            style: TextStyle(fontSize: 16),),
+          )
+        ]
+      )
+    );
+  }
+}

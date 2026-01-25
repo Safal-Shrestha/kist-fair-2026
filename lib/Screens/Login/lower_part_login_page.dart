@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:payment/Screens/HomePage/home_screen.dart';
 import 'package:payment/Screens/Login/form_lower_half.dart';
 import 'package:payment/styles.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LowerPartLoginPage extends StatefulWidget {
   const LowerPartLoginPage({super.key});
@@ -17,9 +17,9 @@ class _LowerPartLoginPageState extends State<LowerPartLoginPage> {
   void _onPressed() async {
     print(formData);
 
-    final pref = await SharedPreferences.getInstance();
+    final storage = const FlutterSecureStorage();
 
-    await pref.setString('phone_number', formData['User Id']!);
+    storage.write(key: 'phone_number', value: formData['User Id']);
 
     Navigator.push(
       context,
@@ -64,25 +64,52 @@ class _LowerPartLoginPageState extends State<LowerPartLoginPage> {
 }
 
 //for login id
-class LoginID extends StatelessWidget {
+class LoginID extends StatefulWidget {
   final ValueChanged<String> onChange;
 
   const LoginID({super.key, required this.onChange});
 
   @override
+  State<LoginID> createState() => _LoginIDState();
+}
+
+class _LoginIDState extends State<LoginID> {
+  final TextEditingController _controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadStoredNumber();
+  }
+
+  Future<void> _loadStoredNumber() async {
+    const storage = FlutterSecureStorage();
+    String? phoneNumber = await storage.read(key: 'phone_number');
+
+    if (phoneNumber != null && phoneNumber.isNotEmpty) {
+      _controller.text = phoneNumber;
+      widget.onChange(phoneNumber);
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
-      spacing: 5,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("User ID"),
+        const Text("User ID"),
+        const SizedBox(height: 5),
         TextFormField(
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter some text';
-            }
-            return null;
-          },
+          controller: _controller,
+          validator: (value) => (value == null || value.isEmpty)
+              ? 'Please enter some text'
+              : null,
           decoration: InputDecoration(
             filled: true,
             fillColor: Styles.fillColor,
@@ -92,12 +119,8 @@ class LoginID extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide.none,
             ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: Styles.primaryColor, width: 2),
-            ),
           ),
-          onChanged: onChange,
+          onChanged: widget.onChange,
         ),
       ],
     );

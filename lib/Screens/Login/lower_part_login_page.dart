@@ -1,8 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:payment/Screens/HomePage/home_screen.dart';
 import 'package:payment/Screens/Login/form_lower_half.dart';
+import 'package:payment/styles.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class LowerPartLoginPage extends StatelessWidget {
+class LowerPartLoginPage extends StatefulWidget {
   const LowerPartLoginPage({super.key});
+
+  @override
+  State<LowerPartLoginPage> createState() => _LowerPartLoginPageState();
+}
+
+class _LowerPartLoginPageState extends State<LowerPartLoginPage> {
+  final Map<String, String> formData = {};
+
+  void _onPressed() async {
+    print(formData);
+
+    final pref = await SharedPreferences.getInstance();
+
+    await pref.setString('phone_number', formData['User Id']!);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => HomeScreen()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +40,23 @@ class LowerPartLoginPage extends StatelessWidget {
         ),
       ),
       child: Container(
-        margin: const EdgeInsets.only(top: 40, left: 30, right: 30),
+        margin: const EdgeInsets.only(top: 40, left: 20, right: 20),
         child: Column(
           spacing: 30,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [LoginID(), LoginPassword(), FormLowerHalf()],
+          children: [
+            LoginID(
+              onChange: (value) {
+                formData['User Id'] = value;
+              },
+            ),
+            LoginPassword(
+              onChange: (value) {
+                formData['MPIN'] = value;
+              },
+            ),
+            FormLowerHalf(onPressed: _onPressed),
+          ],
         ),
       ),
     );
@@ -30,7 +65,9 @@ class LowerPartLoginPage extends StatelessWidget {
 
 //for login id
 class LoginID extends StatelessWidget {
-  const LoginID({super.key});
+  final ValueChanged<String> onChange;
+
+  const LoginID({super.key, required this.onChange});
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +85,7 @@ class LoginID extends StatelessWidget {
           },
           decoration: InputDecoration(
             filled: true,
-            fillColor: Color(0xFF303030),
+            fillColor: Styles.fillColor,
             hintText: "Enter your User ID",
             hintStyle: const TextStyle(color: Colors.grey),
             border: OutlineInputBorder(
@@ -57,9 +94,10 @@ class LoginID extends StatelessWidget {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: Colors.deepPurpleAccent, width: 2),
+              borderSide: BorderSide(color: Styles.primaryColor, width: 2),
             ),
           ),
+          onChanged: onChange,
         ),
       ],
     );
@@ -68,7 +106,9 @@ class LoginID extends StatelessWidget {
 
 //for login password
 class LoginPassword extends StatefulWidget {
-  const LoginPassword({super.key});
+  final ValueChanged<String> onChange;
+
+  const LoginPassword({super.key, required this.onChange});
 
   @override
   State<LoginPassword> createState() => _LoginPasswordState();
@@ -83,13 +123,14 @@ class _LoginPasswordState extends State<LoginPassword> {
       spacing: 5,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("MPIN/Password"),
+        Text("MPIN"),
         TextFormField(
           obscureText: _isPasswordVisible,
+          onChanged: widget.onChange,
           decoration: InputDecoration(
             filled: true,
-            fillColor: Color(0xFF303030),
-            hintText: "Enter your MPIN/Password",
+            fillColor: Styles.fillColor,
+            hintText: "Enter your MPIN",
             hintStyle: TextStyle(color: Colors.grey),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
@@ -97,7 +138,7 @@ class _LoginPasswordState extends State<LoginPassword> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: Colors.deepPurpleAccent, width: 2),
+              borderSide: BorderSide(color: Styles.primaryColor, width: 2),
             ),
             suffixIcon: IconButton(
               icon: Icon(

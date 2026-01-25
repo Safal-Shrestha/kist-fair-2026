@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:payment/Screens/LandingPage/landing_container.dart';
+import 'package:payment/Screens/NewAppLandingPage/landing_container.dart';
 
-void main(){
+void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget{
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
@@ -21,15 +21,10 @@ class MyApp extends StatelessWidget{
         brightness: Brightness.dark,
         primarySwatch: Colors.indigo,
         scaffoldBackgroundColor: const Color(0xFF121212),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF1F1F1F),
-        ),
+        appBarTheme: const AppBarTheme(backgroundColor: Color(0xFF1F1F1F)),
       ),
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: LandingContainer(),
-      )
+      home: Scaffold(body: LandingContainer()),
     );
   }
-
 }

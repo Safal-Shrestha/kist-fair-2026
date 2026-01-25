@@ -8,9 +8,14 @@ class SignupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        spacing: 30,
-        children: [UpperPartSignupPage(), LowerHalfSignupPage()],
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(child: UpperPartSignupPage()),
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: LowerHalfSignupPage(),
+          ),
+        ],
       ),
     );
   }

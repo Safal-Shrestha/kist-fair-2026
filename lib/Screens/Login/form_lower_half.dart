@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:payment/Screens/Signup/signup_page.dart';
 
 class FormLowerHalf extends StatelessWidget {
-  const FormLowerHalf({super.key});
+  final VoidCallback? onPressed;
+
+  const FormLowerHalf({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -9,12 +12,12 @@ class FormLowerHalf extends StatelessWidget {
       child: Column(
         spacing: 10,
         children: [
-          TextButton(onPressed: () {}, child: Text("Forgot MPIN/Password?")),
+          TextButton(onPressed: () {}, child: Text("Forgot MPIN?")),
           SizedBox(
             width: MediaQuery.of(context).size.width,
             height: 50,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: onPressed,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.deepPurpleAccent,
                 shape: RoundedRectangleBorder(
@@ -24,7 +27,15 @@ class FormLowerHalf extends StatelessWidget {
               child: Text("LOGIN"),
             ),
           ),
-          TextButton(onPressed: () {}, child: Text("SignUp")),
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SignupPage()),
+              );
+            },
+            child: Text("SignUp"),
+          ),
         ],
       ),
     );

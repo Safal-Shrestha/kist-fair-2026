@@ -8,22 +8,14 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: constraints.maxHeight),
-              child: IntrinsicHeight(
-                child: Column(
-                  children: [
-                    UpperPart(),
-                    Expanded(child: LowerPartLoginPage()),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(child: UpperPart()),
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: LowerPartLoginPage(),
+          ),
+        ],
       ),
     );
   }

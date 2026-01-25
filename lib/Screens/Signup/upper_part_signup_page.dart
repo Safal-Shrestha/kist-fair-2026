@@ -28,11 +28,7 @@ class IconPart extends StatelessWidget {
             margin: const EdgeInsets.only(left: 20),
             child: Text(
               "Signup",
-              style: TextStyle(
-                fontSize: 38,
-                fontWeight: FontWeight.bold,
-                color: Colors.deepPurpleAccent,
-              ),
+              style: TextStyle(fontSize: 38, fontWeight: FontWeight.bold),
             ),
           ),
         ),

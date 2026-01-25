@@ -10,14 +10,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.red,
-        title: Text('Sub Heading'),
-      ),
-      body: ElevatedButton(onPressed: () {}, child: Text("Click Me!")),
-    );
+    return Scaffold(body: Column(children: []));
   }
 }
-
-

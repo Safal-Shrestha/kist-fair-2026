@@ -16,7 +16,7 @@ class _BalancePartState extends State<BalancePart> {
     return Container(
       margin: const EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 20),
       child: Column(
-        spacing: -8,
+        spacing: 0,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(

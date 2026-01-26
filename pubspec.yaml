@@ -92,4 +92,5 @@ flutter:
 
   assets:
     - assets/luffy.webp
+    - assets/send_money.png
   # Be careful with indentation! Two spaces for 'assets' and four for the file path.

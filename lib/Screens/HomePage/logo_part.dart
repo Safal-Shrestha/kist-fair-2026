@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:payment/Screens/NewAppLandingPage/upper_part_landing_page.dart';
+import 'package:payment/Screens/Notifications/notification_page.dart';
 
 class LogoPart extends StatefulWidget {
   const LogoPart({super.key});
@@ -69,6 +70,14 @@ class Notification extends StatefulWidget {
 class _NotificationState extends State<Notification> {
   @override
   Widget build(BuildContext context) {
-    return IconButton(onPressed: () {}, icon: Icon(Icons.notifications));
+    return IconButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => NotificationPage()),
+        );
+      },
+      icon: Icon(Icons.notifications),
+    );
   }
 }

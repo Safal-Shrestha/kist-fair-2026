@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:payment/Screens/HomePage/bottom_navigation_home_page.dart';
 import 'package:payment/Screens/HomePage/load_send_part.dart';
 import 'package:payment/Screens/HomePage/logo_part.dart';
+import 'package:payment/Screens/QrScan/qr_scan.dart';
 import 'package:payment/styles.dart';
 
 import 'balance_part.dart';
@@ -26,7 +27,12 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       bottomNavigationBar: BottomNavigationHomePage(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => QrScan()),
+          );
+        },
         shape: CircleBorder(),
         backgroundColor: Styles.primaryColor,
         child: Icon(Icons.qr_code_scanner),

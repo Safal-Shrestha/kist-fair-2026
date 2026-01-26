@@ -12,12 +12,27 @@ class BottomNavigationHomePage extends StatefulWidget {
 class _BottomNavigationHomePageState extends State<BottomNavigationHomePage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(color: Styles.fillColor),
-      height: 70,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 10, right: 10, bottom: 5, top: 5),
-        child: Row(children: [HomeButton(), TransactionButton()]),
+    return BottomAppBar(
+      shape: const CircularNotchedRectangle(),
+      notchMargin: 8,
+      color: Styles.fillColor,
+      height: 60,
+      child: Row(
+        children: [
+          Expanded(
+            child: Row(
+              spacing: 10,
+              children: [HomeButton(), TransactionButton()],
+            ),
+          ),
+          Expanded(
+            child: Row(
+              spacing: 10,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [BudgetPlanButton(), SettingsButton()],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -37,12 +52,16 @@ class _HomeButtonState extends State<HomeButton> {
       style: ElevatedButton.styleFrom(
         shadowColor: Colors.transparent,
         backgroundColor: Styles.fillColor,
+        padding: EdgeInsets.only(left: 2, right: 2),
       ),
       onPressed: () {},
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [Icon(Icons.home), Text("Home")],
+          children: [
+            Icon(Icons.home_outlined),
+            Text("Home", style: TextStyle(fontSize: 10)),
+          ],
         ),
       ),
     );
@@ -62,12 +81,62 @@ class _TransactionButtonState extends State<TransactionButton> {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         shadowColor: Colors.transparent,
-        backgroundColor: Styles.fillColor,
+        backgroundColor: Colors.transparent,
+        padding: EdgeInsets.only(left: 2, right: 2),
       ),
       onPressed: () {},
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [Icon(Icons.receipt_long), Text("Statement")],
+        children: [
+          Icon(Icons.receipt_long),
+          Text("Statement", style: TextStyle(fontSize: 10)),
+        ],
+      ),
+    );
+  }
+}
+
+class BudgetPlanButton extends StatelessWidget {
+  const BudgetPlanButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        shadowColor: Colors.transparent,
+        backgroundColor: Colors.transparent,
+        padding: EdgeInsets.only(left: 2, right: 2),
+      ),
+      onPressed: () {},
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.account_balance_wallet_outlined),
+          Text("Wallets", style: TextStyle(fontSize: 10)),
+        ],
+      ),
+    );
+  }
+}
+
+class SettingsButton extends StatelessWidget {
+  const SettingsButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        shadowColor: Colors.transparent,
+        backgroundColor: Styles.fillColor,
+        padding: EdgeInsets.only(left: 2, right: 2),
+      ),
+      onPressed: () {},
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.settings),
+          Text("Settings", style: TextStyle(fontSize: 10)),
+        ],
       ),
     );
   }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:payment/styles.dart';
 
 class UpperPartNotificationPage extends StatelessWidget {
   const UpperPartNotificationPage({super.key});

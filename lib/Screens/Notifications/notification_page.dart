@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:payment/Screens/Notifications/notification_data_notification_page.dart';
 import 'package:payment/Screens/Notifications/upper_part_notification_page.dart';
 
 class NotificationPage extends StatefulWidget {
@@ -11,6 +12,18 @@ class NotificationPage extends StatefulWidget {
 class _NotificationState extends State<NotificationPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: UpperPartNotificationPage());
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: UpperPartNotificationPage(),
+          ), //for appbar of notification page
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: NotificationDataNotificationPage(),
+          ), //for all the notification data
+        ],
+      ),
+    );
   }
 }

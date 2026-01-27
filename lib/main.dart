@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:payment/Screens/Login/login_page.dart';
 import 'package:payment/Screens/NewAppLandingPage/landing_container.dart';
 import 'package:payment/styles.dart';
 
 void main() {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((
+    _,
+  ) {
+    runApp(MyApp());
+  });
 }
 
 class MyApp extends StatefulWidget {
@@ -37,32 +43,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
-      return MaterialApp(
-        themeMode: ThemeMode.dark,
-        theme: ThemeData(
-          brightness: Brightness.light,
-          primarySwatch: Colors.blue,
-          scaffoldBackgroundColor: Colors.white,
-        ),
-        darkTheme: ThemeData(
-          brightness: Brightness.dark,
-          primarySwatch: Colors.indigo,
-          scaffoldBackgroundColor: const Color(0xFF121212),
-          appBarTheme: const AppBarTheme(backgroundColor: Color(0xFF1F1F1F)),
-        ),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          body: Center(
-            child: CircularProgressIndicator(
-              color: Styles.primaryColor,
-              strokeWidth: 6,
-              strokeCap: StrokeCap.round,
-            ),
-          ),
-        ),
-      );
-    }
     return MaterialApp(
       themeMode: ThemeMode.dark,
       theme: ThemeData(
@@ -77,7 +57,13 @@ class _MyAppState extends State<MyApp> {
         appBarTheme: const AppBarTheme(backgroundColor: Styles.backgroundColor),
       ),
       debugShowCheckedModeBanner: false,
-      home: _isOldUser ? LoginPage() : LandingContainer(),
+      home: Scaffold(
+        body: _isLoading
+            ? Center(child: CircularProgressIndicator())
+            : _isOldUser
+            ? LoginPage()
+            : LandingContainer(),
+      ),
     );
   }
 }

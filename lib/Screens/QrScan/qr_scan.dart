@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:payment/Screens/QrScan/lower_qr_view.dart';
 import 'package:payment/styles.dart';
 
 class QrScan extends StatefulWidget {
@@ -59,6 +60,7 @@ class _QrScanState extends State<QrScan> {
               ],
             ),
           ),
+          LowerQrView(),
         ],
       ),
     );
@@ -71,20 +73,28 @@ class QrScannerCamera extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Rect scanWindow = Rect.fromCenter(
-      center: Offset(MediaQuery.of(context).size.width / 2, 200),
-      width: 200,
-      height: 200,
-    );
-
-    return MobileScanner(
-      scanWindow: scanWindow,
-      controller: controller,
-      onDetect: (capture) {
-        final List<Barcode> barcodes = capture.barcodes;
-        for (final barcode in barcodes) {
-          debugPrint("Scanned barcode: ${barcode.rawValue}");
-        }
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        const double scanSize = 250.0;
+        final Rect scanWindow = Rect.fromCenter(
+          center: Offset(constraints.maxWidth / 2, constraints.maxHeight / 2),
+          width: scanSize,
+          height: scanSize,
+        );
+        return MobileScanner(
+          controller: controller,
+          scanWindow: scanWindow,
+          onDetect: (capture) async {
+            final List<Barcode> barcodes = capture.barcodes;
+            for (final barcode in barcodes) {
+              await controller.stop();
+              debugPrint("Scanned barcode: ${barcode.rawValue}");
+              if (context.mounted) {
+                Navigator.pop(context);
+              }
+            }
+          },
+        );
       },
     );
   }

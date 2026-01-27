@@ -8,17 +8,17 @@ class UpperPartNotificationPage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 50, left: 10, right: 10, bottom: 10),
       child: Row(
-        spacing: 10,
+        spacing: 6,
         children: [
           IconButton(
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(Icons.arrow_back, size: 30),
+            icon: Icon(Icons.arrow_back, size: 25),
           ),
           Text(
             "My Notifications",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
         ],
       ),

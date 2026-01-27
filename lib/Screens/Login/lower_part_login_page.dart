@@ -17,6 +17,22 @@ class _LowerPartLoginPageState extends State<LowerPartLoginPage> {
   void _onPressed() async {
     print(formData);
 
+    if (formData['User Id'] == null ||
+        formData['User Id']!.isEmpty ||
+        formData['MPIN'] == null ||
+        formData['MPIN']!.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Error"),
+            content: Text("Please fill all the fields"),
+          );
+        },
+      );
+      return;
+    }
+
     final storage = const FlutterSecureStorage();
 
     storage.write(key: 'phone_number', value: formData['User Id']);

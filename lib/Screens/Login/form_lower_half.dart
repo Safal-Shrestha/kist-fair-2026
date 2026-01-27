@@ -8,36 +8,34 @@ class FormLowerHalf extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        spacing: 10,
-        children: [
-          TextButton(onPressed: () {}, child: Text("Forgot MPIN?")),
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: 50,
-            child: ElevatedButton(
-              onPressed: onPressed,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepPurpleAccent,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
+    return Column(
+      spacing: 10,
+      children: [
+        TextButton(onPressed: () {}, child: Text("Forgot MPIN?")),
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: 50,
+          child: ElevatedButton(
+            onPressed: onPressed,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.deepPurpleAccent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
               ),
-              child: Text("LOGIN"),
             ),
+            child: Text("LOGIN"),
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SignupPage()),
-              );
-            },
-            child: Text("SignUp"),
-          ),
-        ],
-      ),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SignupPage()),
+            );
+          },
+          child: Text("SignUp"),
+        ),
+      ],
     );
   }
 }

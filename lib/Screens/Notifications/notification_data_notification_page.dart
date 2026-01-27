@@ -41,11 +41,35 @@ class _NotificationDataNotificationPageState
             int index = entry.key;
             var item = entry.value;
             return GestureDetector(
-              // onTap: () {
-              //   showDialog(context: context, builder: (BuildContext context) {
-              //     return Dialog
-              //   })
-              // },
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      backgroundColor: Styles.fillColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      title: Text(
+                        item['Title']!,
+                        style: TextStyle(fontWeight: FontWeight.w500),
+                      ),
+                      content: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxHeight: MediaQuery.of(context).size.height * 0.7,
+                        ),
+                        child: CustomScrollView(
+                          shrinkWrap: true,
+                          slivers: [
+                            SliverToBoxAdapter(child: Divider()),
+                            SliverToBoxAdapter(child: Text(item['Message']!)),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
               child: Column(
                 spacing: 8,
                 crossAxisAlignment: CrossAxisAlignment.start,

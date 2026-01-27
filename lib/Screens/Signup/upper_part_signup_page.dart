@@ -53,7 +53,7 @@ class InfoPart extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(left: 20, right: 20),
-      child: Text("Use the mobile number registered via citizenship."),
+      child: Text("Fill all below fields."),
     );
   }
 }

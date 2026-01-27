@@ -38,6 +38,8 @@ dependencies:
   flutter_secure_storage: ^10.0.0
   mobile_scanner: ^7.1.4
   qr_flutter: ^4.1.0
+  connectivity_plus: ^7.0.0
+  internet_connection_checker_plus: ^2.9.1+2
 
 dev_dependencies:
   flutter_test:
@@ -95,4 +97,9 @@ flutter:
   assets:
     - assets/luffy.webp
     - assets/send_money.png
+
+  fonts:
+    - family: NeueRegarde
+      fonts:
+        - asset: assets/fonts/Neue-Regrade-Regular.otf
   # Be careful with indentation! Two spaces for 'assets' and four for the file path.

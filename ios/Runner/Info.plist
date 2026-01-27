@@ -47,5 +47,12 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
     <string>This app needs camera access to scan QR codes for payments.</string>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>We need your location to access Wi-Fi network information.</string>
 </dict>
 </plist>

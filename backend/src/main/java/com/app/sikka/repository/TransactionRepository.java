@@ -1,13 +1,9 @@
 package com.app.sikka.repository;
 
+import com.app.sikka.entity.Transaction;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import java.util.UUID;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-import com.app.sikka.entity.Transaction;
-
-@Repository
 public interface TransactionRepository extends JpaRepository<Transaction, UUID> {
-    
 }

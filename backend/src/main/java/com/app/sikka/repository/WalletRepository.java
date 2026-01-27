@@ -1,13 +1,9 @@
 package com.app.sikka.repository;
 
+import com.app.sikka.entity.Wallet;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import java.util.UUID;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-import com.app.sikka.entity.Wallet;
-
-@Repository
-public interface WalletRepository extends JpaRepository<Wallet, UUID>{
-    
+public interface WalletRepository extends JpaRepository<Wallet, UUID> {
 }

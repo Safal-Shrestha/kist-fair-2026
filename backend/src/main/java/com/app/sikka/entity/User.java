@@ -33,9 +33,9 @@ public class User {
     @Column(name = "pin_hash", nullable = false)
     private String pinHash;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @ColumnDefault("NULL")
-    @Column(name = "account_tier", length = 10)
+    @Column(name = "account_tier")
     private CitizenAccountTier accountTier;
 
     @Column(name = "citizenship_number", length = 20)

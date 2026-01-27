@@ -41,16 +41,18 @@ class IconsContainer extends StatelessWidget {
             child: Center(
               child: Container(
                 decoration: BoxDecoration(shape: BoxShape.circle),
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(
-                    Icons.close,
-                    color: Colors.deepPurpleAccent,
-                    size: 32,
-                  ),
-                ),
+                child: Navigator.canPop(context)
+                    ? IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(
+                          Icons.close,
+                          color: Colors.deepPurpleAccent,
+                          size: 32,
+                        ),
+                      )
+                    : const SizedBox.shrink(),
               ),
             ),
           ),

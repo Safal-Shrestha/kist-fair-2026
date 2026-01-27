@@ -40,68 +40,75 @@ class _NotificationDataNotificationPageState
           ...notificationData.asMap().entries.map((entry) {
             int index = entry.key;
             var item = entry.value;
-            return Column(
-              spacing: 8,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (index == 0 ||
-                    index > 0 &&
-                        notificationData[index - 1]['Date'] !=
-                            item['Date']) ...[
-                  Text(item['Date']!),
-                ],
-                Container(
-                  decoration: BoxDecoration(
-                    color: Styles.fillColor,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      spacing: 10,
-                      children: [
-                        Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              image: AssetImage('assets/luffy.webp'),
-                              fit: BoxFit.cover,
+            return GestureDetector(
+              // onTap: () {
+              //   showDialog(context: context, builder: (BuildContext context) {
+              //     return Dialog
+              //   })
+              // },
+              child: Column(
+                spacing: 8,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (index == 0 ||
+                      index > 0 &&
+                          notificationData[index - 1]['Date'] !=
+                              item['Date']) ...[
+                    Text(item['Date']!),
+                  ],
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Styles.fillColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        spacing: 10,
+                        children: [
+                          Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image: AssetImage('assets/luffy.webp'),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.6,
-                              child: Text(
-                                item['Title']!,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.6,
+                                child: Text(
+                                  item['Title']!,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.6,
-                              child: Text(
-                                item['Message']!,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(fontSize: 12),
-                                maxLines: 3,
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.6,
+                                child: Text(
+                                  item['Message']!,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(fontSize: 12),
+                                  maxLines: 3,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             );
           }),
         ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:payment/Screens/HomePage/home_screen.dart';
 import 'package:payment/Screens/Login/form_lower_half.dart';
@@ -13,22 +14,32 @@ class LowerPartLoginPage extends StatefulWidget {
 
 class _LowerPartLoginPageState extends State<LowerPartLoginPage> {
   final Map<String, String> formData = {};
+  final _validateInput = GlobalKey<FormState>(); //for checking each input field
 
   void _onPressed() async {
     print(formData);
 
-    if (formData['User Id'] == null ||
-        formData['User Id']!.isEmpty ||
-        formData['MPIN'] == null ||
-        formData['MPIN']!.isEmpty) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Error"),
-            content: Text("Please fill all the fields"),
-          );
-        },
+    if (_validateInput.currentState!.validate()) {
+      print(_validateInput.currentState);
+    } else {
+      return;
+    }
+
+    if (formData['User Id'] != '9742549312' || formData['MPIN'] != '1111') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: Duration(seconds: 2),
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Invalid User ID or MPIN",
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
+          ),
+          backgroundColor: Color(0xFF454545),
+        ),
       );
       return;
     }
@@ -47,6 +58,7 @@ class _LowerPartLoginPageState extends State<LowerPartLoginPage> {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 20),
+      padding: const EdgeInsets.only(top: 40, left: 20, right: 20),
       width: MediaQuery.of(context).size.width,
       decoration: const BoxDecoration(
         color: Color(0xFF1F1F1F),
@@ -55,8 +67,8 @@ class _LowerPartLoginPageState extends State<LowerPartLoginPage> {
           topRight: Radius.circular(40),
         ),
       ),
-      child: Container(
-        margin: const EdgeInsets.only(top: 40, left: 20, right: 20),
+      child: Form(
+        key: _validateInput,
         child: Column(
           spacing: 30,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,9 +134,12 @@ class _LoginIDState extends State<LoginID> {
         const Text("User ID"),
         const SizedBox(height: 5),
         TextFormField(
+          maxLength: 10,
+          keyboardType: TextInputType.number,
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           controller: _controller,
           validator: (value) => (value == null || value.isEmpty)
-              ? 'Please enter some text'
+              ? 'Please enter your User ID'
               : null,
           decoration: InputDecoration(
             filled: true,
@@ -134,6 +149,14 @@ class _LoginIDState extends State<LoginID> {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide.none,
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: Styles.primaryColor, width: 2),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: Styles.errorColor, width: 2),
             ),
           ),
           onChanged: widget.onChange,
@@ -164,6 +187,15 @@ class _LoginPasswordState extends State<LoginPassword> {
       children: [
         Text("MPIN"),
         TextFormField(
+          keyboardType: TextInputType.number,
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          maxLength: 4,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return "Please enter your MPIN";
+            }
+            return null;
+          },
           obscureText: _isPasswordVisible,
           onChanged: widget.onChange,
           decoration: InputDecoration(
@@ -178,6 +210,10 @@ class _LoginPasswordState extends State<LoginPassword> {
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: Styles.primaryColor, width: 2),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: Styles.errorColor, width: 2),
             ),
             suffixIcon: IconButton(
               icon: Icon(

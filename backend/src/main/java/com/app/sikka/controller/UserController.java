@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.app.sikka.entity.User;
+import com.app.sikka.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,7 +37,6 @@ public class UserController {
     // create user
     @PostMapping
     public User createUser(@RequestBody User user){
-        user.setId(UUID.randomUUID());
         return userRepository.save(user);
     }
 }

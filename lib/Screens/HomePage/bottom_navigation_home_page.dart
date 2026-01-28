@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:payment/Screens/HomePage/home_screen.dart';
 import 'package:payment/styles.dart';
 
 class BottomNavigationHomePage extends StatefulWidget {
-  const BottomNavigationHomePage({super.key});
+  final bool isHomePage;
+  const BottomNavigationHomePage({super.key, required this.isHomePage});
 
   @override
   State<BottomNavigationHomePage> createState() =>
@@ -22,7 +24,10 @@ class _BottomNavigationHomePageState extends State<BottomNavigationHomePage> {
           Expanded(
             child: Row(
               spacing: 10,
-              children: [HomeButton(), TransactionButton()],
+              children: [
+                HomeButton(isHomePage: widget.isHomePage),
+                TransactionButton(),
+              ],
             ),
           ),
           Expanded(
@@ -39,7 +44,8 @@ class _BottomNavigationHomePageState extends State<BottomNavigationHomePage> {
 }
 
 class HomeButton extends StatefulWidget {
-  const HomeButton({super.key});
+  final bool isHomePage;
+  const HomeButton({super.key, required this.isHomePage});
 
   @override
   State<HomeButton> createState() => _HomeButtonState();
@@ -54,7 +60,14 @@ class _HomeButtonState extends State<HomeButton> {
         backgroundColor: Styles.fillColor,
         padding: EdgeInsets.only(left: 2, right: 2),
       ),
-      onPressed: () {},
+      onPressed: widget.isHomePage
+          ? null
+          : () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomeScreen()),
+              );
+            },
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

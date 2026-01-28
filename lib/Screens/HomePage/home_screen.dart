@@ -25,19 +25,28 @@ class _HomeScreenState extends State<HomeScreen> {
           SliverToBoxAdapter(child: LoadSendPart()),
         ],
       ),
-      bottomNavigationBar: BottomNavigationHomePage(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => QrScan()),
-          );
-        },
-        shape: CircleBorder(),
-        backgroundColor: Styles.primaryColor,
-        child: Icon(Icons.qr_code_scanner),
-      ),
+      bottomNavigationBar: BottomNavigationHomePage(isHomePage: true),
+      floatingActionButton: BottomNavigationFloatingButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+    );
+  }
+}
+
+class BottomNavigationFloatingButton extends StatelessWidget {
+  const BottomNavigationFloatingButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => QrScan()),
+        );
+      },
+      shape: CircleBorder(),
+      backgroundColor: Styles.primaryColor,
+      child: Icon(Icons.qr_code_scanner),
     );
   }
 }

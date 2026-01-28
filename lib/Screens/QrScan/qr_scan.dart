@@ -83,7 +83,7 @@ class QrScannerCamera extends StatelessWidget {
         );
         return MobileScanner(
           controller: controller,
-          scanWindow: scanWindow,
+          // scanWindow: scanWindow,
           onDetect: (capture) async {
             final List<Barcode> barcodes = capture.barcodes;
             for (final barcode in barcodes) {

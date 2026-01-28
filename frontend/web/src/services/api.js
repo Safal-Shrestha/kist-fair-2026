@@ -4,6 +4,7 @@
 import budgetsMock from '../data/budgets'
 import transactionsMock from '../data/transactions'
 import walletMock from '../data/wallet'
+import usersMock from '../data/users'
 
 export async function fetchBudgets() {
   try {
@@ -53,4 +54,45 @@ export async function fetchWallet(userId) {
   } catch (err) {
     throw err
   }
+}
+
+export async function fetchUsers(){
+  await new Promise((r)=>setTimeout(r,120))
+  // return a shallow copy so callers can mutate locally without changing original mock
+  return usersMock.map(u=>({...u}))
+}
+
+export async function toggleUserStatus(id){
+  await new Promise((r)=>setTimeout(r,120))
+  // Toggle in-memory mock (no persistence) — return updated user
+  const u = usersMock.find(x=> x.id === id)
+  if(!u) return null
+  u.status = u.status === 'active' ? 'frozen' : 'active'
+  return {...u}
+}
+
+export async function fetchMerchants(){
+  await new Promise((r)=>setTimeout(r,120))
+  // Mock merchant list
+  return [
+    { id:1, name:'Merchant X', category:'Grocery', walletId:101, approved:true },
+    { id:2, name:'Merchant Y', category:'Pharmacy', walletId:102, approved:false },
+  ]
+}
+
+export async function createMerchant(payload){
+  await new Promise((r)=>setTimeout(r,160))
+  return { success:true, merchant: { id: Date.now(), ...payload } }
+}
+
+export async function issueSubsidy(payload){
+  await new Promise((r)=>setTimeout(r,160))
+  // payload: { userId, category, amount, expiry }
+  return { success:true, subsidy: { id: 's_'+Date.now(), ...payload } }
+}
+
+export async function createSubWallet(payload){
+  await new Promise((r)=>setTimeout(r,160))
+  // payload: { userId, category, amount, expiry }
+  return { success:true, subWallet: { id: 'sw_'+Date.now(), ...payload } }
 }

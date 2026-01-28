@@ -5,11 +5,16 @@ import Landing from '../pages/Landing'
 import Login from '../pages/Login'
 import GovDashboard from '../pages/gov/GovDashboard'
 import GovBudget from '../pages/gov/GovBudget'
-import GovTransactions from '../pages/gov/GovTransactions'
+import GovTransactions from '../pages/gov/Transactions'
 import Departments from '../pages/gov/Departments'
 import BudgetAllocation from '../pages/gov/BudgetAllocation'
 import Accounts from '../pages/gov/Accounts'
 import FreezeAccount from '../pages/gov/FreezeAccount'
+import Users from '../pages/gov/Users'
+import Wallets from '../pages/gov/Wallets'
+import Merchants from '../pages/gov/Merchants'
+import AdminUtilities from '../pages/gov/AdminUtilities'
+import Subsidies from '../pages/gov/Subsidies'
 import About from '../pages/About'
 import HowItWorks from '../pages/HowItWorks'
 import CitizenDashboard from '../pages/citizen/CitizenDashboard'
@@ -51,6 +56,11 @@ export default function AppRoutes() {
                       <Route path="budgets-alloc" element={<BudgetAllocation />} />
                       <Route path="accounts" element={<Accounts />} />
                       <Route path="freeze" element={<FreezeAccount />} />
+                      <Route path="users" element={<Users />} />
+                      <Route path="wallets" element={<Wallets />} />
+                      <Route path="merchants" element={<Merchants />} />
+                      <Route path="subsidies" element={<Subsidies />} />
+                      <Route path="admin" element={<AdminUtilities />} />
                     </Routes>
                 </AdminLayout>
               </ProtectedRoute>

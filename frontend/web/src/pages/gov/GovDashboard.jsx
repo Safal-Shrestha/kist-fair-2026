@@ -18,6 +18,7 @@ import {
 const COLORS = ['#0b3a66', '#2fa44f', '#94a3b8']
 
 import { motion } from 'framer-motion'
+import { formatINR } from '../../utils/format'
 
 export default function GovDashboard(){
   const [budgets, setBudgets] = useState([])
@@ -33,8 +34,8 @@ export default function GovDashboard(){
     load()
   },[])
 
-  const totalAllocated = budgets.reduce((s,b)=>s+b.allocated,0)
-  const totalUsed = budgets.reduce((s,b)=>s+b.used,0)
+  const totalAllocated = budgets.reduce((s,b)=>s+(b.allocated||0),0)
+  const totalUsed = budgets.reduce((s,b)=>s+(b.used||0),0)
 
   const pieData = budgets.map(b=>({name:b.name, value:b.allocated}))
 
@@ -61,8 +62,8 @@ export default function GovDashboard(){
         <h2 className="text-xl font-semibold">{greet}, John Doe</h2>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 container">
-        <CardStat title="Total Allocated" value={`रु${new Intl.NumberFormat().format(totalAllocated)}`} />
-        <CardStat title="Total Used" value={`रु${new Intl.NumberFormat().format(totalUsed)}`} />
+        <CardStat title="Total Allocated" value={formatINR(totalAllocated)} />
+        <CardStat title="Total Used" value={formatINR(totalUsed)} />
         <CardStat title="Active Projects" value={projects.length} />
       </div>
 
@@ -75,8 +76,8 @@ export default function GovDashboard(){
                 <XAxis dataKey="month" />
                 <YAxis />
                 <Tooltip />
-                <Bar dataKey="revenue" fill="#0b3a66" />
-                <Bar dataKey="expense" fill="#2fa44f" />
+                <Bar dataKey="revenue" fill="#0b3a66" isAnimationActive={true} animationDuration={900} />
+                <Bar dataKey="expense" fill="#2fa44f" isAnimationActive={true} animationDuration={900} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -87,7 +88,7 @@ export default function GovDashboard(){
           <div className="h-40 mt-3">
             <ResponsiveContainer>
               <PieChart>
-                <Pie data={pieData} dataKey="value" nameKey="name" outerRadius={60}>
+                <Pie data={pieData} dataKey="value" nameKey="name" outerRadius={60} isAnimationActive={true} animationDuration={900}>
                   {pieData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}

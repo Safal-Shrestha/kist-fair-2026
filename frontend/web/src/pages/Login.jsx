@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { motion } from 'framer-motion'
 import Footer from '../components/Footer'
@@ -27,10 +27,19 @@ export default function Login(){
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-navy-royal">
-      <motion.div initial={{opacity:0,y:8}} animate={{opacity:1,y:0}} className="w-full max-w-md bg-white rounded-lg shadow p-6">
-        <h2 className="text-2xl font-semibold text-primary">Login</h2>
-        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+    <div className="min-h-screen flex flex-col bg-navy-royal">
+      <div className="flex-1 flex items-center justify-center">
+        <motion.div initial={{opacity:0,y:8}} animate={{opacity:1,y:0}} className="w-full max-w-md bg-white rounded-lg shadow p-6">
+          <div className="flex items-start gap-6">
+            <div className="flex-1">
+              <div className="flex items-center justify-between">
+                <button aria-label="Back to home" onClick={()=>navigate('/')} className="p-2 rounded hover:bg-gray-100">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </button>
+                <h2 className="text-2xl font-semibold text-primary">Login</h2>
+                <div className="w-8" />
+              </div>
+              <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           <div>
             <label className="block text-sm text-slate-700">Phone Number</label>
             <div className="mt-1 relative">
@@ -57,8 +66,11 @@ export default function Login(){
             <button type="submit" disabled={!valid} className="w-full px-4 py-2 rounded font-semibold btn-fill btn-primary" style={{opacity: valid?1:0.6}}>LOGIN</button>
           </div>
 
-        </form>
-      </motion.div>
+              </form>
+            </div>
+          </div>
+        </motion.div>
+      </div>
       <Footer />
     </div>
   )

@@ -1,18 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:payment/Screens/Login/login_page.dart';
 import 'package:payment/Screens/NewAppLandingPage/landing_container.dart';
+import 'package:payment/Screens/OfflineHomePage/offline_home_page.dart';
+import 'package:payment/connectivity_checker.dart';
 import 'package:payment/styles.dart';
+import 'package:provider/provider.dart';
+
+final GlobalKey<ScaffoldMessengerState> messengerKey =
+    GlobalKey<ScaffoldMessengerState>();
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((
     _,
   ) {
-    runApp(MyApp());
+    runApp(
+      ChangeNotifierProvider(
+        create: (context) => ConnectivityProvider(),
+        child: const MyApp(),
+      ),
+    );
   });
 }
 
@@ -26,13 +35,11 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool _isOldUser = false;
   bool _isLoading = true;
-  bool _isConnectedToNetwork = true;
 
   @override
   void initState() {
     super.initState();
     _checkUser();
-    _getNetworkStatus();
   }
 
   Future<void> _checkUser() async {
@@ -45,32 +52,17 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  //to check if wifi is working or not
-  Future<void> _getNetworkStatus() async {
-    // Check the hardware connection
-    var connectivityResult = await (Connectivity().checkConnectivity());
-
-    if (connectivityResult.contains(ConnectivityResult.wifi)) {
-      // Check if the Wi-Fi actually has internet access
-      bool hasInternet = await InternetConnection().hasInternetAccess;
-
-      setState(() {
-        _isConnectedToNetwork = true;
-      });
-    } else if (connectivityResult.contains(ConnectivityResult.mobile)) {
-      setState(() {
-        _isConnectedToNetwork = true;
-      });
-    } else {
-      setState(() {
-        _isConnectedToNetwork = false;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scaffoldMessengerKey: messengerKey,
+      builder: (context, child) {
+        final network = Provider.of<ConnectivityProvider>(context);
+        if (!network.isOnline) {
+          return const OfflineHomePage();
+        }
+        return child!;
+      },
       themeMode: ThemeMode.dark,
       theme: ThemeData(
         fontFamily: 'NeueRegarde',
@@ -87,13 +79,11 @@ class _MyAppState extends State<MyApp> {
       ),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: _isConnectedToNetwork
-            ? _isLoading
-                  ? Center(child: CircularProgressIndicator())
-                  : _isOldUser
-                  ? LoginPage()
-                  : LandingContainer()
-            : Container(),
+        body: _isLoading
+            ? Center(child: CircularProgressIndicator())
+            : _isOldUser
+            ? LoginPage()
+            : LandingContainer(),
       ),
     );
   }

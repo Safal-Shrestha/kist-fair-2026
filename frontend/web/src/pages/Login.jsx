@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Footer from '../components/Footer'
 
@@ -8,7 +9,7 @@ export default function Login(){
   const [phone, setPhone] = useState('')
   const [pin, setPin] = useState('')
   const [error, setError] = useState(null)
-  const { login } = useAuth()
+  const { login, logout } = useAuth()
   const navigate = useNavigate()
 
   const valid = /^\d{10}$/.test(phone) && /^\d{4}$/.test(pin)
@@ -25,6 +26,12 @@ export default function Login(){
       setError('Login failed')
     }
   }
+
+  // Clear any cached user/session when arriving at the login page
+  useEffect(() => {
+    // best-effort: clear stored user so previous admin session isn't reused
+    logout().catch(() => {})
+  }, [])
 
   return (
     <div className="min-h-screen flex flex-col bg-navy-royal">

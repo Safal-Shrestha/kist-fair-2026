@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
-import { fetchBudgets, createBudget, fetchTransactions, fetchMerchants } from '../../services/api'
+import { fetchBudgets, createBudget, fetchTransactions, fetchMerchants, fetchPrograms, createProgram, fetchProgramAllocations, createProgramAllocation } from '../../services/api'
 import { formatINR } from '../../utils/format'
 
 export default function AdminUtilities(){
@@ -17,6 +17,9 @@ export default function AdminUtilities(){
   },[])
 
   const [analytics, setAnalytics] = useState({ totalTx:0, subsidyUsage:0, merchantSales:0 })
+  const [programs, setPrograms] = useState([])
+  const [programAllocations, setProgramAllocations] = useState([])
+  const [progForm, setProgForm] = useState({ name:'', categories:'', budget:'', fiscalYear:'' })
 
   useEffect(()=>{
     async function loadAll(){
@@ -27,6 +30,9 @@ export default function AdminUtilities(){
       setAnalytics({ totalTx, subsidyUsage, merchantSales })
     }
     loadAll()
+    // load programs and allocations
+    fetchPrograms().then(setPrograms)
+    fetchProgramAllocations().then(setProgramAllocations)
   },[])
 
   function exportJSON(name, data){
@@ -66,9 +72,9 @@ export default function AdminUtilities(){
   async function handleCreate(e){
     e.preventDefault()
     const data = Object.fromEntries(new FormData(e.target))
-    // TODO: create program endpoint
-    alert('Program created (mock)')
-    e.target.reset()
+    const payload = { name: data.title || '', categories: (data.categories||'').split(',').map(s=>s.trim()).filter(Boolean), budget: Number(data.amount||0), fiscalYear: data.fiscalYear||'' , status: 'active' }
+    const res = await createProgram(payload)
+    if(res && res.success){ setPrograms(p=>[res.program, ...p]); setProgForm({ name:'', categories:'', budget:'', fiscalYear:'' }); alert('Program created (mock)') }
   }
 
   async function handleAllocate(e){
@@ -87,6 +93,14 @@ export default function AdminUtilities(){
     setForm({title:'', category:'', amount:''})
   }
 
+  async function handleCreateProgramAllocation(e){
+    e.preventDefault()
+    const data = Object.fromEntries(new FormData(e.target))
+    const payload = { programId: data.programId, department: data.department, amount: Number(data.amount), fiscalYear: data.fiscalYear }
+    const res = await createProgramAllocation(payload)
+    if(res && res.success){ setProgramAllocations(a=>[res.allocation, ...a]); alert('Program allocation created (mock)') }
+  }
+
   return (
     <motion.main initial={{opacity:0}} animate={{opacity:1}} className="py-6">
       <h2 className="text-xl font-semibold mb-4">Admin Utilities</h2>
@@ -97,15 +111,16 @@ export default function AdminUtilities(){
           <div className="mt-2 text-sm">
             <div className="flex gap-2 items-center">
               <div className="p-2 bg-white/5 rounded">Total tx<br/><strong>{analytics.totalTx}</strong></div>
-              <div className="p-2 bg-white/5 rounded">Subsidy used<br/><strong>रु{new Intl.NumberFormat().format(analytics.subsidyUsage)}</strong></div>
-              <div className="p-2 bg-white/5 rounded">Merchant sales<br/><strong>रु{new Intl.NumberFormat().format(analytics.merchantSales)}</strong></div>
+              <div className="p-2 bg-white/5 rounded">Subsidy used<br/><strong>{formatINR(analytics.subsidyUsage)}</strong></div>
+              <div className="p-2 bg-white/5 rounded">Merchant sales<br/><strong>{formatINR(analytics.merchantSales)}</strong></div>
             </div>
           </div>
           <form onSubmit={handleCreate} className="mt-3 space-y-3">
-            <input name="title" placeholder="Program title" className="w-full p-2 border rounded" required />
-            <input name="category" placeholder="Category" className="w-full p-2 border rounded" />
-            <input name="amount" placeholder="Allocation amount" className="w-full p-2 border rounded" />
-            <button className="btn-fill btn-primary">Create Program (mock)</button>
+            <input name="title" placeholder="Program name" className="w-full p-2 border rounded" required />
+            <input name="categories" placeholder="Categories (comma separated)" className="w-full p-2 border rounded" />
+            <input name="amount" placeholder="Budget allocation" className="w-full p-2 border rounded" />
+            <input name="fiscalYear" placeholder="Fiscal year (e.g. 2025-2026)" className="w-full p-2 border rounded" />
+            <button className="btn-fill btn-primary hover:scale-105 transition-transform">Create Program (mock)</button>
           </form>
         </div>
 
@@ -128,6 +143,20 @@ export default function AdminUtilities(){
               </BarChart>
             </ResponsiveContainer>
           </div>
+
+          <div className="mt-4">
+            <h5 className="font-medium">Programs</h5>
+            <div className="mt-2 overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="text-left text-slate-500"><tr><th>Name</th><th>Category</th><th>Budget</th><th>FY</th><th>Status</th></tr></thead>
+                <tbody>
+                  {programs.map(p=> (
+                    <tr key={p.id} className="border-t"><td className="py-2">{p.name}</td><td>{(p.categories||[]).join(', ')}</td><td>{formatINR(p.budget)}</td><td>{p.fiscalYear}</td><td>{p.status}</td></tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -138,6 +167,8 @@ export default function AdminUtilities(){
             <button className="btn-fill px-3 py-1" onClick={()=>exportCSV('budgets', budgets)}>Export Budgets (CSV)</button>
             <button className="btn-fill px-3 py-1" onClick={async ()=>exportCSV('transactions', await fetchTransactions())}>Export Transactions (CSV)</button>
             <button className="btn-fill px-3 py-1" onClick={async ()=>exportCSV('merchants', await fetchMerchants())}>Export Merchants (CSV)</button>
+            <button className="btn-fill px-3 py-1" onClick={async ()=>exportCSV('programs', await fetchPrograms())}>Export Programs (CSV)</button>
+            <button className="btn-fill px-3 py-1" onClick={async ()=>exportCSV('program_allocations', await fetchProgramAllocations())}>Export Program Allocations (CSV)</button>
           </div>
         </div>
 

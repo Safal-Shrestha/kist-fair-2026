@@ -8,7 +8,7 @@ export default function AdminLayout({ children }){
   const [open, setOpen] = useState(true)
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar onToggleSidebar={() => setOpen(o=>!o)} hideLinks={true} open={open} logoSize={'small'} />
+      <Navbar onToggleSidebar={() => setOpen(o=>!o)} hideLinks={true} open={open} logoSize={'large'} />
       <div className="flex flex-1">
         {open && <Sidebar role="government" />}
         <div className="flex-1 bg-gray-50 p-6">

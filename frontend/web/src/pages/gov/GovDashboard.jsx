@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { fetchBudgets, fetchTransactions } from '../../services/api'
+import { fetchBudgets, fetchTransactions, fetchUsers } from '../../services/api'
 import CardStat from '../../components/CardStat'
 import {
   ResponsiveContainer,
@@ -23,6 +23,14 @@ import { formatINR } from '../../utils/format'
 export default function GovDashboard(){
   const [budgets, setBudgets] = useState([])
   const [transactions, setTransactions] = useState([])
+  const [users, setUsers] = useState([])
+
+  // Filters
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
+  const [departmentFilter, setDepartmentFilter] = useState('')
+  const [categoryFilter, setCategoryFilter] = useState('')
+  const [dateError, setDateError] = useState('')
 
   useEffect(()=>{
     async function load(){
@@ -30,14 +38,39 @@ export default function GovDashboard(){
       setBudgets(b)
       const t = await fetchTransactions()
       setTransactions(t)
+      const u = await fetchUsers()
+      setUsers(u)
     }
     load()
   },[])
 
-  const totalAllocated = budgets.reduce((s,b)=>s+(b.allocated||0),0)
-  const totalUsed = budgets.reduce((s,b)=>s+(b.used||0),0)
+  // derive lists for filters
+  const departments = Array.from(new Set([...transactions.map(t=>t.department), ...budgets.map(b=>b.name)])).filter(Boolean)
+  const categories = budgets.map(b=>b.name)
 
-  const pieData = budgets.map(b=>({name:b.name, value:b.allocated}))
+  // apply filters
+  function inRange(dateStr){
+    if(!startDate && !endDate) return true
+    const d = new Date(dateStr)
+    if(startDate){ const s = new Date(startDate); if(d < s) return false }
+    if(endDate){ const e = new Date(endDate); if(d > e) return false }
+    return true
+  }
+
+  const filteredTransactions = transactions.filter(t => {
+    if(departmentFilter && t.department !== departmentFilter) return false
+    return inRange(t.date)
+  })
+
+  const filteredBudgets = budgets.filter(b => {
+    if(categoryFilter && b.name !== categoryFilter) return false
+    return true
+  })
+
+  const totalAllocated = filteredBudgets.reduce((s,b)=>s+(b.allocated||0),0)
+  const totalUsed = filteredBudgets.reduce((s,b)=>s+(b.used||0),0)
+
+  const pieData = filteredBudgets.map(b=>({name:b.name, value:b.allocated}))
 
   // Mock revenue vs expense series
   const series = [
@@ -53,13 +86,64 @@ export default function GovDashboard(){
     { name: 'Infra', progress: 55 },
   ]
 
+  // Mock subsidies for demo notifications (would be fetched from API)
+  const subsidies = [
+    { id: 's1', userId: 1, category: 'Education', expiry: '2026-01-30' },
+    { id: 's2', userId: 2, category: 'Health', expiry: '2026-02-05' },
+  ]
+
+  // notifications
+  const frozenAccounts = users.filter(u=>u.status === 'frozen').length
+  const now = new Date()
+  const expiringSoon = subsidies.filter(s => {
+    const d = new Date(s.expiry)
+    const diff = (d - now) / (1000*60*60*24)
+    return diff >=0 && diff <= 7
+  }).length
+
   const hour = new Date().getHours()
   const greet = hour < 12 ? 'Good Morning' : hour < 18 ? 'Good Afternoon' : 'Good Evening'
 
   return (
     <motion.main initial={{opacity:0}} animate={{opacity:1}} transition={{duration:0.4}} className="py-6">
       <div className="mb-4">
-        <h2 className="text-xl font-semibold">{greet}, John Doe</h2>
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+          <h2 className="text-xl font-semibold">{greet}, John Doe</h2>
+
+          <div className="flex items-center gap-3 flex-wrap">
+            <div className="text-sm text-slate-700">Filters:</div>
+            <label className="text-sm text-slate-600">Start:</label>
+            <input type="date" value={startDate} onChange={e=>{ setStartDate(e.target.value); if(dateError) setDateError('') }} className="border rounded p-1 text-sm" />
+            <label className="text-sm text-slate-600">End:</label>
+            <input type="date" value={endDate} onChange={e=>{
+              const v = e.target.value
+              if(startDate && v && new Date(v) < new Date(startDate)){
+                // enforce end >= start
+                setEndDate(startDate)
+                setDateError('End date cannot be before start date')
+                setTimeout(()=>setDateError(''), 3000)
+              } else {
+                setEndDate(v)
+                if(dateError) setDateError('')
+              }
+            }} className="border rounded p-1 text-sm" />
+            {dateError && <div className="text-sm text-red-600 ml-1">{dateError}</div>}
+            <select value={departmentFilter} onChange={e=>setDepartmentFilter(e.target.value)} className="border rounded p-1 text-sm">
+              <option value="">All Departments</option>
+              {departments.map(d=> <option key={d} value={d}>{d}</option>)}
+            </select>
+            <select value={categoryFilter} onChange={e=>setCategoryFilter(e.target.value)} className="border rounded p-1 text-sm">
+              <option value="">All Categories</option>
+              {categories.map(c=> <option key={c} value={c}>{c}</option>)}
+            </select>
+            <button onClick={() => { setStartDate(''); setEndDate(''); setDepartmentFilter(''); setCategoryFilter('') }} className="text-sm px-2 py-1 btn">Clear</button>
+          </div>
+        </div>
+        
+        <div className="mt-3 flex gap-3 flex-wrap">
+          <div className="px-3 py-2 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 rounded">{expiringSoon} subsidies expiring this week</div>
+          <div className="px-3 py-2 bg-red-50 border-l-4 border-red-400 text-red-800 rounded">{frozenAccounts} frozen accounts pending review</div>
+        </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 container">
         <CardStat title="Total Allocated" value={formatINR(totalAllocated)} />
